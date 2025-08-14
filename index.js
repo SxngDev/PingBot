@@ -17,10 +17,15 @@ app.listen(PORT, () => {
     console.log(`Servidor web escuchando en el puerto ${PORT}`);
 });
 
-// Lógica de ping
+// Lógica de ping con tiempo de respuesta
 console.log("Iniciando PingBot...");
-setInterval(() => {
-    fetch(url)
-        .then(res => console.log(`[${new Date().toLocaleTimeString()}] Ping enviado. Status:`, res.status))
-        .catch(err => console.error("Error al hacer ping:", err));
+setInterval(async () => {
+    const inicio = Date.now();
+    try {
+        const res = await fetch(url);
+        const tiempo = Date.now() - inicio;
+        console.log(`[${new Date().toLocaleTimeString()}] Ping enviado. Status: ${res.status} | Tiempo: ${tiempo}ms`);
+    } catch (err) {
+        console.error("Error al hacer ping:", err);
+    }
 }, 4 * 60 * 1000); // cada 4 minutos
